@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jojo.dao.MyUserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.jojo.entity.MyUserInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="work1" jdbcType="INTEGER" property="work1" />
+    <result column="work2" jdbcType="INTEGER" property="work2" />
+    <result column="tp" jdbcType="INTEGER" property="tp" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, work1, work2, tp
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.jojo.entity.MyUserInfo">
+    select
+    <!--<include refid="Base_Column_List" />-->
+    *
+    from combine
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllUser" resultType="com.jojo.entity.MyUserInfo">
+    select * from combine
+  </select>
+  <select id="selectByName" parameterType="java.lang.String" resultType="com.jojo.entity.MyUserInfo">
+    select
+    <!--<include refid="Base_Column_List" />-->
+    *
+    from combine
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from combine
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="delUserByid" parameterType="java.util.List">
+    delete from combine
+    where id in
+    <foreach collection="ids" item="xxx" open="(" close=")" separator=",">
+      #{xxx}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.jojo.entity.MyUserInfo">
+    insert into combine (id, name, work1, 
+      work2, tp)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{work1,jdbcType=INTEGER},
+      #{work2,jdbcType=INTEGER}, #{tp,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jojo.entity.MyUserInfo">
+    insert into combine
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="work1 != null">
+        work1,
+      </if>
+      <if test="work2 != null">
+        work2,
+      </if>
+      <if test="tp != null">
+        tp,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="work1 != null">
+        #{work1,jdbcType=INTEGER},
+      </if>
+      <if test="work2 != null">
+        #{work2,jdbcType=INTEGER},
+      </if>
+      <if test="tp != null">
+        #{tp,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jojo.entity.MyUserInfo">
+    update combine
+    <set>
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="work1 != null">
+        work1 = #{work1,jdbcType=INTEGER},
+      </if>
+      <if test="work2 != null">
+        work2 = #{work2,jdbcType=INTEGER},
+      </if>
+      <if test="tp != null">
+        tp = #{tp,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{rid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jojo.entity.MyUserInfo">
+    update combine
+    set name = #{name,jdbcType=VARCHAR},
+      work1 = #{work1,jdbcType=INTEGER},
+      work2 = #{work2,jdbcType=INTEGER},
+      tp = #{tp,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/js/jquery-1.10.2.js}"></script>
+    <script th:src="@{/layui/layui.all.js}"></script>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+<table id="demo" lay-filter="test"></table>
+<table id="seaDemo" lay-filter="seatest" style="display: none"></table>
+<script type="text/html" id="myToolbar">
+    <button type="button" class="layui-btn layui-btn-primary layui-btn layui-btn-sm" lay-event="saveUser"><i class="layui-icon layui-icon-addition"></i></button>
+    <button type="button" class="layui-btn layui-btn-primary layui-btn layui-btn-sm" lay-event="delUser"><i class="layui-icon layui-icon-delete"></i></button>
+    <button type="button" class="layui-btn layui-btn-primary layui-btn layui-btn-sm" lay-event="seaUser"><i class="layui-icon layui-icon-search"></i></button>
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<form class="layui-form" action="" id="userSaveFrom" style="display: none">
+    <div class="layui-form-item">
+        <label class="layui-form-label">ID</label>
+        <div class="layui-input-block">
+            <input type="text" name="id" lay-verify="required"  placeholder="请输入学生ID" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作业1</label>
+        <div class="layui-input-block">
+            <input type="text" name="work1" lay-verify="number" placeholder="请输入作业1成绩" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作业2</label>
+        <div class="layui-input-block">
+            <input type="text" name="work2" lay-verify="number" placeholder="请输入作业2成绩" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="saveFormDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<form class="layui-form" action="" id="userEditFrom" style="display: none">
+    <div class="layui-form-item">
+        <label class="layui-form-label">ID</label>
+        <div class="layui-input-block">
+            <input type="text" id="id" name="id" lay-verify="required"  placeholder="请输入学生ID" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+            <input type="text" id="name" name="name" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作业1</label>
+        <div class="layui-input-block">
+            <input type="text" id="work1" name="work1" lay-verify="number" placeholder="请输入作业1成绩" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作业2</label>
+        <div class="layui-input-block">
+            <input type="text" id="work2" name="work2" lay-verify="number" placeholder="请输入作业2成绩" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="editFormDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<form class="layui-form" action="" id="userSeaFrom" style="display: none">
+    <div class="layui-form-item">
+        <label class="layui-form-label">ID</label>
+        <div class="layui-input-inline">
+            <input type="text" name="id" placeholder="请输入学生ID" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-inline">
+            <input type="text"  name="name"  placeholder="请输入姓名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">搜索方式</label>
+        <div class="layui-input-block">
+            <input type="radio" name="search" value="seaId" title="id">
+            <input type="radio" name="search" value="seaName" title="名字">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="seaFormDemo">立即搜索</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<form class="layui-form" action="" id="userSearchFrom" style="display: none">
+    <div class="layui-form-item">
+        <label class="layui-form-label">ID</label>
+        <div class="layui-input-block">
+            <input type="text" id="sid" name="id" lay-verify="required"  placeholder="请输入学生ID" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+            <input type="text" id="sname" name="name" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作业1</label>
+        <div class="layui-input-block">
+            <input type="text" id="swork1" name="work1" lay-verify="number" placeholder="请输入作业1成绩" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作业2</label>
+        <div class="layui-input-block">
+            <input type="text" id="swork2" name="work2" lay-verify="number" placeholder="请输入作业2成绩" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">总分</label>
+        <div class="layui-input-block">
+            <input type="text" id="stp" name="work2" lay-verify="number" placeholder="请输入总成绩" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+</form>
+</body>
+<script>
+    var form=layui.form;
+    var table = layui.table;
+    form.render();
+    layui.use('table', function(){
+        //第一个实例
+        var myTable = table.render({
+            elem: '#demo'
+            ,height: 500
+            ,url: 'ShowUserLayUi' //数据接口
+            ,page: true //开启分页
+            ,toolbar: '#myToolbar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            ,cols: [
+                [ //表头
+                    {type: 'checkbox', fixed: 'left'}
+                ,{field: 'id', title: 'ID', width:120, sort: true, fixed: 'left'}
+                ,{field: 'name', title: '姓名', width:80}
+                ,{field: 'work1', title: '作业1', width:80, sort: true}
+                ,{field: 'work2', title: '作业2', width:80, sort: true}
+                ,{field: 'tp', title: '总分', width: 100, sort: true}
+                ,{title: '操作', width: 120, toolbar: '#barDemo'}
+            ]]
+        });
+
+        //监听头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id)
+                ,data = checkStatus.data; //获取选中的数据
+            var ids=[]
+            switch(obj.event){
+                case 'saveUser':
+                    layer.open(
+                        {
+                            type: 1,
+                            content: $("#userSaveFrom"), //
+                            icon: 1,
+                            title:"添加学生信息",
+                            area:['600px','500px']
+                        }
+                    );
+                    break;
+                case 'delUser':
+                    if(data.length === 0){
+                        layer.msg('请选择一行');
+                    } else {
+                        console.log(data)
+                        layer.confirm("确认删除么？",function (index) {
+                            for (var i=0;i<data.length;i++){
+                                ids.push(data[i].id);
+                            }
+                            $.ajax({
+                                url:'delUser',
+                                dataType: 'json',
+                                type:'POST',
+                                data:{ids:JSON.stringify(ids)},
+                                success: function (result) {
+                                    if(result.code==0){
+                                        //关闭弹出层
+                                        layer.closeAll();
+                                        //重新加载数据表
+                                        myTable.reload();
+                                        //显示删除成功消息
+                                        layer.msg(result.message,{icon:1});
+                                    }else {
+                                        //关闭弹出层
+                                        layer.closeAll();
+                                        layer.msg(result.message,{icon: 5});
+                                    }
+                                }
+                            })
+                        })
+                    }
+                    break;
+                case 'seaUser':
+                    layer.open(
+                        {
+                            type: 1,
+                            content: $("#userSeaFrom"), //
+                            icon: 1,
+                            title:"查找学生信息",
+                            area:['450px','300px']
+                        }
+                    );
+                    break;
+            };
+        });
+        //监听提交添加
+        form.on('submit(saveFormDemo)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            console.log(data.field)
+            $.ajax({
+                url: 'saveUser',//地址
+                dataType:'json',//数据类型
+                type:'POST',
+                data:(data.field),
+                //请求成功
+                success: function (result) {
+                    if(result.code==0){
+                        //关闭弹出层
+                        layer.closeAll();
+                        //显示添加成功消息
+                        layer.msg(result.message,{icon:1});
+                        //重新加载数据表
+                        myTable.reload();
+                    }else {
+                        //关闭弹出层
+                        layer.closeAll();
+                        layer.msg(result.message,{icon:5});
+                    }
+                }
+            });
+            return false;
+        });
+
+        //监听提交修改
+        form.on('submit(editFormDemo)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            console.log(data.field)
+            $.ajax({
+                url: 'editUser',//地址
+                dataType:'json',//数据类型
+                type:'POST',
+                data:data.field,
+                //请求成功
+                success: function (result) {
+                    if(result.code==0){
+                        //关闭弹出层
+                        layer.closeAll();
+                        //显示修改成功消息
+                        layer.msg(result.message,{icon:1});
+                        //重新加载数据表
+                        myTable.reload();
+                    }else {
+                        //关闭弹出层
+                        layer.closeAll();
+                        layer.msg(result.message,{icon:5});
+                    }
+                }
+            });
+            return false;
+        });
+
+        //监听提交查找
+        form.on('submit(seaFormDemo)', function(data){
+            console.log(data.field)
+            // layer.msg(JSON.stringify(data.field))
+            if(data.field.search==="seaId"){
+                $.ajax({
+                    url: 'seaRid',//地址
+                    dataType:'json',//数据类型
+                    type:'POST',
+                    data:data.field,
+                    success: function (result) {
+                        if(result.code==0){
+                            $.ajax({
+                                url: 'seaUser',//地址
+                                dataType:'json',//数据类型
+                                type:'POST',
+                                //data:null,
+                                success: function (result) {
+                                    if(result.code==0){
+                                        // layer.alert("tanchulaila")
+                                        // console.log(result)
+                                        $("#sid").val(result.data[0].id);
+                                        $("#sname").val(result.data[0].name);
+                                        $("#swork1").val(result.data[0].work1);
+                                        $("#swork2").val(result.data[0].work2);
+                                        $("#stp").val(result.data[0].tp);
+                                        layer.open(
+                                            {
+                                                type: 1,
+                                                content: $("#userSearchFrom"), //
+                                                title:"查看学生信息",
+                                                area:['600px','500px']
+                                            }
+                                        );
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+
+            }else if(data.field.search==="seaName"){
+                $.ajax({
+                    url: 'seaName',//地址
+                    dataType:'json',//数据类型
+                    type:'POST',
+                    data:data.field,
+                    success: function (result) {
+                        if(result.code==0){
+                            $.ajax({
+                                url: 'seaNameUser',//地址
+                                dataType:'json',//数据类型
+                                type:'POST',
+                                //data:null,
+                                success: function (result) {
+                                    if(result.code==0){
+                                        // layer.alert("tanchulaila")
+                                        // console.log(result)
+                                        $("#sid").val(result.data[0].id);
+                                        $("#sname").val(result.data[0].name);
+                                        $("#swork1").val(result.data[0].work1);
+                                        $("#swork2").val(result.data[0].work2);
+                                        $("#stp").val(result.data[0].tp);
+                                        layer.open(
+                                            {
+                                                type: 1,
+                                                content: $("#userSearchFrom"), //
+                                                title:"查看学生信息",
+                                                area:['600px','500px']
+                                            }
+                                        );
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+
+            }
+            return false;
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'del'){
+                layer.confirm('真的删除行么？', function(index){
+                    obj.del(); //删除对应行（tr）的DOM结构
+                    layer.close(index);
+                    //向服务端发送删除指令
+                });
+            } else if(layEvent === 'edit'){
+                console.log(data)
+                $("#id").val(data.id);
+                $("#name").val(data.name);
+                $("#work1").val(data.work1);
+                $("#work2").val(data.work2);
+                $.ajax({
+                    url: 'editRid',//地址
+                    dataType:'json',//数据类型
+                    type:'POST',
+                    data:data,
+                });
+                layer.open(
+                    {
+                        type: 1,
+                        content: $("#userEditFrom"), //
+                        title:"编辑学生信息",
+                        area:['600px','500px']
+                    }
+                );
+            }
+        });
+
+    });
+</script>
+</html>
